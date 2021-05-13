@@ -16,6 +16,7 @@ class RegisterCommandTests {
     private val participants = listOf(owner.publicKey)
 
     private val realEstate = RealEstate(
+        value = 2000000,
         owner = owner.party,
         address = "City, Test Residential Quarter, Building 1, Entrance A, №1"
     )

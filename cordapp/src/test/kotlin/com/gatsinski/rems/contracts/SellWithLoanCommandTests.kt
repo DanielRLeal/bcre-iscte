@@ -21,26 +21,27 @@ class SellWithLoanCommandTests {
 
     private val realEstate = RealEstate(
         owner = seller.party,
+        value = 2000000,
         address = "City, Test Residential Quarter, Building 1, Entrance A, №1"
     )
     private val realEstateAfterPurchase = realEstate.copy(owner = buyer.party)
     private val realEstateWithTenant = realEstate.copy(tenant = tenant.party)
 
-    private val bankState1 = Bank(
+    private val bank1 = Bank(
         buyer = buyer.party,
         buyerMoney =  6000,
         isWorking = true,
         buyerAge = 26
     )
 
-    private val bankState2 = Bank(
+    private val bank2 = Bank(
         buyer = buyer.party,
         buyerMoney =  3000,
         isWorking = true,
         buyerAge = 21
     )
 
-    private val bankState3 = Bank(
+    private val bank3 = Bank(
         buyer = buyer.party,
         buyerMoney =  8000,
         isWorking = false,
@@ -72,6 +73,7 @@ class SellWithLoanCommandTests {
                 input(RealEstateContract.PROGRAM_ID, realEstate)
                 input(RealEstateContract.PROGRAM_ID, realEstate)
                 output(RealEstateContract.PROGRAM_ID, realEstateAfterPurchase)
+
                 failsWith("A single input state should be consumed when buying a real estate")
             }
         }

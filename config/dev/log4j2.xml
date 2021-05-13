@@ -18,7 +18,7 @@
             </PatternLayout>
         </Console>
 
-        <!-- Will generate up to 10 log files for a given day. During every rollover it will delete
+        <!-- Will  up to 10 log files for a given day. During every rollover it will delete
              those that are older than 60 days, but keep the most recent 10 GB -->
         <RollingFile name="RollingFile-Appender"
                      fileName="${log-path}/${log-name}.log"

@@ -17,6 +17,7 @@ class TerminateRentCommandTests {
 
     private val realEstateWithTenant = RealEstate(
         owner = owner.party,
+        value = 1000,
         tenant = tenant.party,
         address = "City, Test Residential Quarter, Building 75, Entrance A, №10"
     )

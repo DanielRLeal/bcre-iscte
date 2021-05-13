@@ -1,8 +1,10 @@
 package com.gatsinski.rems
 
 import net.corda.core.contracts.*
+import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.Party
 import net.corda.core.transactions.LedgerTransaction
+import java.util.*
 
 // *****************
 // * Contract Code *
@@ -47,8 +49,14 @@ class RealEstateContract : Contract {
                         (inputState.tenant != outputState.owner)
                 val inputStateSigners = inputState.participants.map { it.owningKey }.toSet()
                 val outputStateSigners = outputState.participants.map { it.owningKey }.toSet()
+
+                val outputBankState = tx.outputStates.single() as Bank
+                "Buyer must have the amount greater than the real estate price"  using (outputBankState.buyerMoney >= inputState.value);
                 "All affected parties should sign the transaction when a real estate is being bought" using
                         (command.signers.toSet() == inputStateSigners union outputStateSigners)
+
+                //Isto deve ser uma cena para aplicar nao uma condiçao
+              //  "Remove money from bank account " using (outputBankState.buyerMoney == outputBankState.buyerMoney - inputState.value )
             }
             is Commands.SellWithLoan -> requireThat {
                 "A single input state should be consumed when buying a real estate" using (tx.inputStates.size == 1)
@@ -62,6 +70,8 @@ class RealEstateContract : Contract {
                 "Owner money is superior than 5000" using (outputBankState.buyerMoney > 5000)
                 "Owner has professional stability" using (outputBankState.isWorking)
                 "Owner has to be at least 25 years old" using (outputBankState.buyerAge > 25)
+                //Se isto tudo estiver ok é feito o emprestimo e ele vai verificar novamente o saldo na conta do comprador
+                "Buyer must have the amount greater than the real estate price"  using (outputBankState.buyerMoney >= inputState.value);
 
                 "The owner should change when buying a real estate" using (inputState.owner != outputState.owner)
                 "Only the owner should change when buying a real estate" using
@@ -84,6 +94,8 @@ class RealEstateContract : Contract {
                         (inputState == outputState.copy(tenant = inputState.tenant))
                 "The owner and the tenant should be different when renting a real estate" using
                         (outputState.owner != outputState.tenant)
+                val outputBankState = tx.outputStates.single() as Bank
+                "Buyer must have the amount greater than the real estate rent price"  using (outputBankState.buyerMoney >= inputState.value);
                 val inputStateSigners = inputState.participants.map { it.owningKey }.toSet()
                 val outputStateSigners = outputState.participants.map { it.owningKey }.toSet()
                 "Both owner and tenant should sign the transaction when renting a real estate" using
@@ -115,12 +127,17 @@ class RealEstateContract : Contract {
 // * State *
 // *********
 data class RealEstate(
-    override val linearId: UniqueIdentifier = UniqueIdentifier(),
-    val owner: Party,
+    val linearId: UniqueIdentifier = UniqueIdentifier(),
+    override val owner: Party,
+    //val faceValue: Amount<Issued<Currency>>,
+    val value: Int,
     val tenant: Party? = null,
     val address: String
-) : LinearState {
+) : OwnableState {
     override val participants: List<Party> get() = listOfNotNull(owner, tenant)
+    override fun withNewOwner(newOwner: AbstractParty): CommandAndState {
+        TODO("Not yet implemented")
+    }
 }
 
 // *********
@@ -140,5 +157,6 @@ data class Bank(
     companion object {
         const val PROGRAM_ID: ContractClassName = "com.gatsinski.rems.BankContract"
     }
+
 }
 

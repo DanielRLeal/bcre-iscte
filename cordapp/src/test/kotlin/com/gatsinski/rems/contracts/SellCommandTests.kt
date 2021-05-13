@@ -18,6 +18,7 @@ class SellCommandTests {
 
     private val realEstate = RealEstate(
         owner = seller.party,
+        value = 2000000,
         address = "City, Test Residential Quarter, Building 1, Entrance A, №1"
     )
     private val realEstateAfterPurchase = realEstate.copy(owner = buyer.party)

@@ -17,6 +17,7 @@ class RentCommandTests {
 
     private val realEstateWithoutTenant = RealEstate(
         owner = owner.party,
+        value = 1000,
         address = "City, Test Residential Quarter, Building 75, Entrance A, №10"
     )
 
