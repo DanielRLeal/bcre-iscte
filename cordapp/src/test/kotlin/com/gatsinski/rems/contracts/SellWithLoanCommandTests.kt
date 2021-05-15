@@ -1,14 +1,12 @@
 package com.gatsinski.rems.contracts
 
-import com.gatsinski.rems.Bank
+import com.gatsinski.rems.BankAccount
 import com.gatsinski.rems.RealEstate
 import com.gatsinski.rems.RealEstateContract
 import net.corda.core.identity.CordaX500Name
-import net.corda.core.identity.Party
 import net.corda.testing.core.TestIdentity
 import net.corda.testing.node.MockServices
 import net.corda.testing.node.ledger
-import org.eclipse.jetty.util.TypeUtil
 import org.junit.Test
 
 class SellWithLoanCommandTests {
@@ -27,21 +25,21 @@ class SellWithLoanCommandTests {
     private val realEstateAfterPurchase = realEstate.copy(owner = buyer.party)
     private val realEstateWithTenant = realEstate.copy(tenant = tenant.party)
 
-    private val bank1 = Bank(
+    private val bank1 = BankAccount(
         buyer = buyer.party,
         buyerMoney =  6000,
         isWorking = true,
         buyerAge = 26
     )
 
-    private val bank2 = Bank(
+    private val bank2 = BankAccount(
         buyer = buyer.party,
         buyerMoney =  3000,
         isWorking = true,
         buyerAge = 21
     )
 
-    private val bank3 = Bank(
+    private val bank3 = BankAccount(
         buyer = buyer.party,
         buyerMoney =  8000,
         isWorking = false,

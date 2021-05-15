@@ -16,6 +16,7 @@ class SellCommandTests {
     private val buyerAndSeller = listOf(seller.publicKey, buyer.publicKey)
     private val buyerSellerAndTenant = listOf(seller.publicKey, buyer.publicKey, tenant.publicKey)
 
+
     private val realEstate = RealEstate(
         owner = seller.party,
         value = 2000000,
